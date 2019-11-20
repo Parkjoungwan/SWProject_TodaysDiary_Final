@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.util.logging.Logger;
 
+import diary.Diary;
+
 public class UserDAO {
 	private Connection conn;
 	private PreparedStatement pstmt;
@@ -25,7 +27,6 @@ public class UserDAO {
 	}
 	public int login(String userID, String userPassword){
 		String SQL="SELECT userPassword FROM USER WHERE userID=?";
-		System.out.println(SQL);
 		try{
 			pstmt= conn.prepareStatement(SQL);
 			pstmt.setString(1, userID);
@@ -44,7 +45,50 @@ public class UserDAO {
 		}
 		
 		return -2;//데이터베이스 오류
+	}
+	public String userAgecall(String userID){
+		String SQL="SELECT userAge FROM USER WHERE userID=?";
+		try{
+			String Age=null;
+			pstmt= conn.prepareStatement(SQL);
+			pstmt.setString(1, userID);
+			rs=pstmt.executeQuery();
+			if(rs.next())
+			{
+				User user = new User();
+				user.setUserAge(rs.getString(1));
+				Age=user.getUserAge();
+				return Age;
+			}
+		}catch(Exception e)
+		{
+			e.printStackTrace();
+		}
 		
+		return null;//데이터베이스 오류
+	}
+	
+	public Diary getDiary(int diaryID){
+		String SQL = "SELECT * FROM diary WHERE  diaryID=?";
+		try{
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, diaryID);
+			rs = pstmt.executeQuery();
+			if(rs.next()){
+				Diary diary = new Diary();
+				diary.setDiaryID(rs.getInt(1));
+				diary.setUserID(rs.getString(2));
+				diary.setDiaryDate(rs.getString(3));
+				diary.setDiaryContent(rs.getString(4));
+				diary.setDiaryReport(rs.getInt(5));
+				diary.setUserAge(rs.getString(6));
+				diary.setDiaryAvailable(rs.getInt(7));
+				return diary;
+			}
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+		return null;
 	}
 	public int join(User user){
 		String SQL = "INSERT INTO USER VALUES (?, ?, ?, ?, ?)";

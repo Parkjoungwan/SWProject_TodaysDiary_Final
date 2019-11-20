@@ -18,18 +18,17 @@ public class User {
 	public void setUserPassword(String userPassword) {
 		this.userPassword = userPassword;
 	}
-	public String getUserEmail() {
-		return userEmail;
-	}
-	public void setUserEmail(String userEmail) {
-		this.userEmail = userEmail;
-	}
-
 	public String getUserAge() {
 		return userAge;
 	}
 	public void setUserAge(String userAge) {
 		this.userAge = userAge;
+	}
+	public String getUserEmail() {
+		return userEmail;
+	}
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
 	}
 	public int getUserWR() {
 		return userWR;

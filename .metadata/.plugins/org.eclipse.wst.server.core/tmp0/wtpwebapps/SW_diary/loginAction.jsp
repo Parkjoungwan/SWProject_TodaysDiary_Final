@@ -1,15 +1,15 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-    <%@ page import="user.UserDAO"%>
-    <%@ page import="java.io.PrintWriter" %>
-    <%@ page import="javax.servlet.http.HttpSession" %>
-    <% request.setCharacterEncoding("UTF-8"); %>
+<%@ page import="user.UserDAO"%>
+<%@ page import="user.User"%>
+<%@ page import="java.io.PrintWriter" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
+<% request.setCharacterEncoding("UTF-8"); %>
     <jsp:useBean id="user" class="user.User" scope="page">
    		<jsp:setProperty property="userID" name="user"/>
     	<jsp:setProperty property="userPassword" name="user"/>
+    	<jsp:setProperty name="user" property="userAge"/>
     </jsp:useBean>
-
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -30,12 +30,14 @@
 			script.println("</script>");
 		}
 		UserDAO userDAO = new UserDAO();
-		//int result = userDAO.login("1111","123");
 		int result = userDAO.login(user.getUserID(), user.getUserPassword());
 		if(result==1)
 		{
+			String Age= userDAO.userAgecall(user.getUserID());
+			System.out.println(user.getUserID());
+			System.out.println(Age);
+			session.setAttribute("userAge", Age);
 			session.setAttribute("userID", user.getUserID());
-			session.setAttribute("userAge", user.getUserAge());
 			PrintWriter script = response.getWriter();
 			script.println("<script>");
 			script.println("location.href='main.jsp'");
