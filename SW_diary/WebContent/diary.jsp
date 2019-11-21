@@ -4,6 +4,7 @@
 <%@ page import="diary.DiaryDAO" %>
 <%@ page import="diary.Diary" %>
 <%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Random" %>
 <%@ page import="javax.servlet.http.HttpSession" %>
 <!DOCTYPE html>
 <html>
@@ -113,7 +114,25 @@ a, a:hover{
             <%
             	}
             %>
-            <a href="write.jsp" class="btn btn-primary pull-right">글쓰기</a>
+            <%
+            if(userID!=null)
+            {
+            	String userAge=null;
+            	userAge = (String)session.getAttribute("userAge");
+            	ArrayList<Integer> IDlist= null;
+            	Random random = new Random();
+            	int rannum=0;
+            	IDlist = diaryDAO.getRAN(userID, userAge);
+            	if(IDlist.size()!=0)
+            	{
+                	rannum = random.nextInt(IDlist.size());
+            	
+           	%>
+             	<a href="view.jsp?diaryID=<%=IDlist.get(rannum) %>" class="btn btn-primary pull-right">교환</a>
+            <%}
+            }
+            %>
+             <a href="write.jsp" class="btn btn-primary pull-right">글쓰기</a>
         </div>
     </div>
 <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>

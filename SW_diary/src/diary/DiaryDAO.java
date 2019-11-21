@@ -6,6 +6,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.ArrayList;
 
+import user.User;
+
 public class DiaryDAO {
 
 	private Connection conn;
@@ -55,23 +57,24 @@ public class DiaryDAO {
 		return -1;//데이터베이스오류
 	}
 	
-	public int write(String userID, String diaryContent, String userAge){
-		String SQL = "INSERT INTO diary VALUES (?, ?, ?, ?, ?, ?, ?)";
-		int diaryReport=0;
+	
+	public ArrayList<Integer> getRAN (String userID, String userAge){
+		String SQL = "SELECT diaryID from diary WHERE userID NOT IN (?) AND userAge=? AND diaryAvailable NOT IN (0)";
+		ArrayList<Integer> IDlist = new ArrayList<Integer>();
 		try{
 			PreparedStatement pstmt = conn.prepareStatement(SQL);
-			pstmt.setInt(1, getNext());
-			pstmt.setString(2, userID);
-			pstmt.setString(3, getDate());
-			pstmt.setString(4, diaryContent);
-			pstmt.setInt(5,diaryReport);
-			pstmt.setString(6, userAge);
-			pstmt.setInt(7, 1);
-			return pstmt.executeUpdate();
-		} catch (Exception e){
+			pstmt.setString(1,userID);
+			pstmt.setString(2,userAge);
+			rs= pstmt.executeQuery();
+			while(rs.next())
+			{
+				IDlist.add(rs.getInt(1));
+			}
+		}catch(Exception e){
 			e.printStackTrace();
 		}
-		return -1;//데이터베이스오류
+		
+		return IDlist;
 	}
 	public ArrayList<Diary> getList (int pageNumber){
 		String SQL = "SELECT * FROM diary WHERE diaryID < ? AND diaryAvailable = 1 ORDER BY diaryID DESC LIMIT 10";
@@ -96,6 +99,26 @@ public class DiaryDAO {
 		}
 		return list;
 	}
+	
+	public int write(String userID, String diaryContent, String userAge){
+		String SQL = "INSERT INTO diary VALUES (?, ?, ?, ?, ?, ?, ?)";
+		int diaryReport=0;
+		try{
+			PreparedStatement pstmt = conn.prepareStatement(SQL);
+			pstmt.setInt(1, getNext());
+			pstmt.setString(2, userID);
+			pstmt.setString(3, getDate());
+			pstmt.setString(4, diaryContent);
+			pstmt.setInt(5,diaryReport);
+			pstmt.setString(6, userAge);
+			pstmt.setInt(7, 1);
+			return pstmt.executeUpdate();
+		} catch (Exception e){
+			e.printStackTrace();
+		}
+		return -1;//데이터베이스오류
+	}
+	
 	
 	public boolean nextPage(int pageNumber){
 		String SQL = "SELECT * FROM diary WHERE diaryID < ? AND diaryAvailable = 1 ORDER BY diaryID DESC LIMIT 10";
