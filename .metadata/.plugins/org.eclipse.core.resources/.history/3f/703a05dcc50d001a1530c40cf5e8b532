@@ -1,0 +1,58 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="java.io.PrintWriter" %>
+<%@ page import="diary.DiaryDAO" %>
+<%@ page import="diary.Diary" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="java.util.Random" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width-device-width", initial-scale="1">
+<link rel="stylesheet" href="css/bootstrap.css">
+<link rel="stylesheet" href="css/custom.css">
+<title>Diary</title>
+<style type="text/css">
+a, a:hover{
+	color: #000000;
+	text-decoration: none;
+}</style>
+</head>
+<body>
+    <%
+        String userID = null;
+        if(session.getAttribute("userID")!=null){
+            userID = (String) session.getAttribute("userID");
+        }
+    	DiaryDAO diaryDAO = new DiaryDAO();
+    %>
+
+    <div class="container">
+        <div class="row">
+         <%
+            if(userID!=null)
+            {
+            	String userAge=null;
+            	userAge = (String)session.getAttribute("userAge");
+            	ArrayList<Integer> IDlist= null;
+            	Random random = new Random();
+            	int rannum=0;
+            	IDlist = diaryDAO.getRAN(userID, userAge);
+            	if(IDlist.size()!=0)
+            	{
+                	rannum = random.nextInt(IDlist.size());
+            	
+           	%>
+             	<a href="view.jsp?diaryID=<%=IDlist.get(rannum) %>" class="btn btn-primary pull-right">교환</a>
+            <%}
+            }
+            %>
+             <a href="write.jsp" class="btn btn-primary pull-right">글쓰기</a>
+        </div>
+    </div>
+<script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-3.3.1.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>
