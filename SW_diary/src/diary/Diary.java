@@ -8,7 +8,14 @@ public class Diary {
 	private int diaryReport;
 	private String userAge;
 	private int diaryAvailable;
+	private String weather;
 	
+	public String getWeather() {
+		return weather;
+	}
+	public void setWeather(String weather) {
+		this.weather = weather;
+	}
 	public int getDiaryReport() {
 		return diaryReport;
 	}

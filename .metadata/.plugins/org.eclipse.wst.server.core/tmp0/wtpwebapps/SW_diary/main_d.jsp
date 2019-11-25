@@ -61,6 +61,6 @@
 					<img src="images/logo.png" style="max-width: 10%;">
 				</footer>
 			</div>
-		</div>
+	</div>
 </body>
 </html>

@@ -5,7 +5,6 @@ public class User {
 	private String userPassword;
 	private String userEmail;
 	private String userAge;
-	private int userWR;
 	public String getUserID() {
 		return userID;
 	}
@@ -29,12 +28,6 @@ public class User {
 	}
 	public void setUserEmail(String userEmail) {
 		this.userEmail = userEmail;
-	}
-	public int getUserWR() {
-		return userWR;
-	}
-	public void setUserWR(int userWR) {
-		this.userWR = userWR;
 	}
 
 }

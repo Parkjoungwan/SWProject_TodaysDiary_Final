@@ -34,8 +34,6 @@
 		if(result==1)
 		{
 			String Age= userDAO.userAgecall(user.getUserID());
-			System.out.println(user.getUserID());
-			System.out.println(Age);
 			session.setAttribute("userAge", Age);
 			session.setAttribute("userID", user.getUserID());
 			PrintWriter script = response.getWriter();

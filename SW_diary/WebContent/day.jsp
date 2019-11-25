@@ -2,9 +2,12 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.io.PrintWriter" %>
 <%@ page import="diary.DiaryDAO" %>
+<%@ page import="user.UserDAO" %>
 <%@ page import="diary.Diary" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="java.util.Random" %>
+<%@ page import="java.util.Date" %>
+<%@ page import="java.text.SimpleDateFormat" %>
 <%@ page import="javax.servlet.http.HttpSession" %>
 <!DOCTYPE html>
 <html>
@@ -48,45 +51,79 @@
 </head>
 	<body>
 	    <%
-	        String userID = null;
-	        if(session.getAttribute("userID")!=null){
-	            userID = (String) session.getAttribute("userID");
-	        }
+	    String userID = null;
+	    Boolean canWrite = false;
+	    if(session.getAttribute("userID")!=null){
+            userID = (String) session.getAttribute("userID");
+            //해당 유저 아이디로 글을 검색하는데 마지막 작성일을 가져와야해요.
+            UserDAO userDAO = new UserDAO();
+            Diary diary = userDAO.getDiaryByUserID(userID);
+            if(diary == null){//글이 없는 경우
+               //글쓰기 가능
+               canWrite = true;
+            }else {
+               String diaryDate = diary.getDiaryDate().split(" ")[0];
+               Date nowDate = new Date();
+               SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+               String nowFormatedDate = sdf.format(nowDate);
+               if(diaryDate.equals(nowFormatedDate)){
+                  //오늘 글을 썻어
+                  canWrite = false;
+               }else {
+            	   //긍을 오늘 안썻어
+                  canWrite = true;
+               }
+            }
+        } else {
+        	PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert('로그인을 하세요'.)");
+			script.println("location.href='login.jsp'");
+			script.println("</script>");
+        }
 	    	DiaryDAO diaryDAO = new DiaryDAO();
+	    	System.out.println(canWrite);
 	    %>
 		<div class="top"></div>
+		
 			<div class="month" style="float: left; border: 0; padding-top: 25%;" >
 				<a href="month.html"><img src="images/month.png" style="max-width: 20%; height: auto; padding-left: 10%; "></a>
 				<img src="images/wol.png" style="max-width: 20%; height: auto; float: right; padding-right: 10%;">
 				<!--날짜는 네모빈칸으로 해서 당일 날짜 출력기능 추가예정-->
 			</div>
 	
+		<% if(canWrite == true ){ %>
 		<div class="day">
 			<img src="images/bell_25.png" style="max-width: 100%; height: auto; ">
-			<a href="write.jsp"><img src="images/write_button.png" style="max-width: 70%;padding-top: 3%; padding-bottom: 10%;"></a>
+			<a href="write_d.jsp"><img src="images/write_button.png" style="max-width: 70%;padding-top: 3%; padding-bottom: 10%;"></a>
 		</div>
+		<%} else {
+            	String userAge=null;
+            	userAge = (String)session.getAttribute("userAge");
+            	ArrayList<Integer> IDlist= null;
+            	Random random = new Random();
+            	int rannum=0;
+            	IDlist = diaryDAO.getRAN(userID, userAge);
+            	if(IDlist.size()!=0)
+            	{
+                	rannum = random.nextInt(IDlist.size());
+         		}
+            	
+          %>
+          <div class="day">
+			<img src="images/full_25.png" style="max-width: 100%; height: auto; ">
+			<a href="view_d.jsp?diaryID=<%=IDlist.get(rannum) %>"><img src="images/change_fin.png" style="max-width: 70%;padding-top: 3%; padding-bottom: 10%;"></a>
+         </div>
+         <% 
+			}
+		 %>
+		
+		
 			<hr style="border: solid 2px #353c54; margin-top: 10;">
 			<div class="bottom_bar" style="padding-top:3%;">
 				<a href="day.jsp"><img src="images/home_1.png" style="max-width: 10%;height: auto; padding-left:12% ;padding-top:2px;"></a>
-				<a href="diary.jsp"><img src="images/my_diary.png" style="max-width:15%; height: auto; padding-left: 18%;padding-top:3px;"></a>
-				<%
-			            if(userID!=null)
-			            {
-			            	String userAge=null;
-			            	userAge = (String)session.getAttribute("userAge");
-			            	ArrayList<Integer> IDlist= null;
-			            	Random random = new Random();
-			            	int rannum=0;
-			            	IDlist = diaryDAO.getRAN(userID, userAge);
-			            	if(IDlist.size()!=0)
-			            	{
-			                	rannum = random.nextInt(IDlist.size());
-			            	
-			           	%>
-			           		<a href="view.jsp?diaryID=<%=IDlist.get(rannum) %>"><img src="images/exchange.png" style="max-width: 16%; height: auto;padding-left: 18%;"></a>
-			            <%}
-			            }
-			     %>
+				<a href="mypage.jsp"><img src="images/my_diary.png" style="max-width:15%; height: auto; padding-left: 18%;padding-top:3px;"></a>
+				<a href="logoutAction_d.jsp"><img src="images/logout.png" style="max-width: 14%; height: auto;padding-left: 18%;"></a>
 			</div>
 	</body>
 </html>

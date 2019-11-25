@@ -111,7 +111,7 @@ input.signup{
 				<input class="pw" type="password" class="form-control" name="userPassword" maxlength="20">
 				<input class="login" class="form-control" type="submit">
 		</form>
-		<a href="join.jsp"><input class="signup" type="button" name="signup"></a>
+		<a href="join_d.jsp"><input class="signup" type="button" name="signup"></a>
 		<div></div>
 		<footer>
 			<img src="images/logo.png" style="max-width: 10%;">

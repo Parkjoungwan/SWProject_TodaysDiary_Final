@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
-	<item value="false" key="J2EE_EXPORT_OVERWRITE"/>
-	<item value="false" key="J2EE_EXPORT_SOURCE"/>
+	<item value="true" key="J2EE_EXPORT_OVERWRITE"/>
+	<item value="true" key="J2EE_EXPORT_SOURCE"/>
 	<list key="J2EE_EXPORT_JST_WEB">
+		<item value="C:\Users\BKBaik\Desktop\코끼리팀_오늘의 교환일기 웹사이트.war"/>
 		<item value="C:\Users\BKBaik\Desktop\user.war"/>
 		<item value="C:\Users\BKBaik\Desktop\diary.war"/>
 		<item value="C:\Users\BKBaik\Desktop\SW_diary.war"/>
