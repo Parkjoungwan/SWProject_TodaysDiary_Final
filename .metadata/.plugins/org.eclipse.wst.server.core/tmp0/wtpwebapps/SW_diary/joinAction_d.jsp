@@ -50,8 +50,6 @@
 			}
 			else 
 			{
-				session.setAttribute("userID", user.getUserID());
-				session.setAttribute("userAge", user.getUserAge());
 				PrintWriter script = response.getWriter();
 				script.println("<script>");
 				script.println("location.href='login_d.jsp'");

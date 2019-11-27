@@ -1,5 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+    <%@ page import="user.UserDAO"%>
+<%@ page import="user.User"%>
+<%@ page import="java.io.PrintWriter" %>
+<%@ page import="javax.servlet.http.HttpSession" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -100,6 +104,19 @@ input.signup{
 </head>
 
 <body>
+	<%
+		String userID = null;
+		if(session.getAttribute("userID")!=null){
+			userID = (String) session.getAttribute("userID");
+		}
+		if(userID!=null){
+			PrintWriter script = response.getWriter();
+			script.println("<script>");
+			script.println("alert('이미 로그인이 되어있습니다.')");
+			script.println("location.href='day.jsp'");
+			script.println("</script>");
+		}
+		%>
 	<div class="top"></div>
 	<p class="appname">
 		<img src="images/appname.png" style="max-width: 80%; height: auto;">

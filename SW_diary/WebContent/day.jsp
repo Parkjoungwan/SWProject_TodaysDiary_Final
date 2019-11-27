@@ -55,7 +55,6 @@
 	    Boolean canWrite = false;
 	    if(session.getAttribute("userID")!=null){
             userID = (String) session.getAttribute("userID");
-            //해당 유저 아이디로 글을 검색하는데 마지막 작성일을 가져와야해요.
             UserDAO userDAO = new UserDAO();
             Diary diary = userDAO.getDiaryByUserID(userID);
             if(diary == null){//글이 없는 경우
@@ -67,10 +66,10 @@
                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
                String nowFormatedDate = sdf.format(nowDate);
                if(diaryDate.equals(nowFormatedDate)){
-                  //오늘 글을 썻어
+                  //오늘 글을 썼다
                   canWrite = false;
                }else {
-            	   //긍을 오늘 안썻어
+            	   //긍을 오늘 안썼다
                   canWrite = true;
                }
             }
@@ -108,7 +107,6 @@
             	{
                 	rannum = random.nextInt(IDlist.size());
          		}
-            	
           %>
           <div class="day">
 			<img src="images/full_25.png" style="max-width: 100%; height: auto; ">
@@ -117,12 +115,10 @@
          <% 
 			}
 		 %>
-		
-		
 			<hr style="border: solid 2px #353c54; margin-top: 10;">
 			<div class="bottom_bar" style="padding-top:3%;">
 				<a href="day.jsp"><img src="images/home_1.png" style="max-width: 10%;height: auto; padding-left:12% ;padding-top:2px;"></a>
-				<a href="mypage.jsp"><img src="images/my_diary.png" style="max-width:15%; height: auto; padding-left: 18%;padding-top:3px;"></a>
+				<a href="mypage_d.jsp"><img src="images/my_diary.png" style="max-width:15%; height: auto; padding-left: 18%;padding-top:3px;"></a>
 				<a href="logoutAction_d.jsp"><img src="images/logout.png" style="max-width: 14%; height: auto;padding-left: 18%;"></a>
 			</div>
 	</body>
